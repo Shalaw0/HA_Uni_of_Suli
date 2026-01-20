@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Human Anatomy Presentation</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--text:#f0f6fc;--text2:#8b949e;--border:#30363d;--accent:#58a6ff;--green:#3fb950;--red:#f85149;--orange:#d29922}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+    .header{background:var(--bg2);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;position:sticky;top:0;z-index:100}
+    .logo{font-size:1.5rem;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:.5rem}
+    .tabs{display:flex;gap:.5rem;flex-wrap:wrap}
+    .tab{padding:.5rem 1.25rem;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text2);cursor:pointer;font-weight:600;transition:all .15s}
+    .tab:hover{background:var(--bg);color:var(--text)}
+    .tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+    .controls{margin-left:auto;display:flex;gap:.5rem}
+    .btn{padding:.5rem 1rem;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);cursor:pointer;font-weight:600;transition:all .15s}
+    .btn:hover{background:var(--bg)}
+    main{max-width:1400px;margin:0 auto;padding:2rem}
+    .topic{display:none}.topic.active{display:block}
+    .slide-tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
+    .slide-tab{padding:.6rem 1.2rem;background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--text2);cursor:pointer;font-weight:500;transition:all .15s}
+    .slide-tab:hover{color:var(--text)}
+    .slide-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+    .slide{display:none;animation:fadeIn .3s}.slide.active{display:block}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .grid{display:grid;grid-template-columns:1fr 420px;gap:2rem}
+    @media(max-width:1000px){.grid{grid-template-columns:1fr}}
+    .content-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.5rem}
+    .slide-title{font-size:1.75rem;font-weight:700;margin-bottom:1rem;color:var(--accent);display:flex;align-items:center;gap:.75rem}
+    .slide-title .icon{font-size:2rem}
+    .text{color:var(--text2);font-size:1.05rem}
+    .text p{margin-bottom:1rem}
+    .text strong{color:var(--text)}
+    .text ul{margin:1rem 0 1rem 1.5rem}
+    .text li{margin-bottom:.5rem}
+    .highlight{background:rgba(88,166,255,.1);border-left:3px solid var(--accent);padding:1rem;margin:1rem 0;border-radius:0 8px 8px 0}
+    .section-title{font-size:1.15rem;font-weight:700;color:var(--text);margin:1.5rem 0 .75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+    .visual-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem}
+    .svg-wrap{background:var(--bg);border-radius:8px;padding:1rem;margin-bottom:1rem}
+    .svg-wrap svg{width:100%;height:350px}
+    .svg-label{text-align:center;font-size:.85rem;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+    .anim-row{display:flex;gap:.5rem;align-items:center;justify-content:center;margin:.75rem 0}
+    .anim-btn{padding:.4rem .8rem;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--text);cursor:pointer;font-size:.8rem}
+    .anim-btn.active{background:var(--accent);border-color:var(--accent)}
+    .speed-row{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--text2)}
+    .speed-row input{width:80px;accent-color:var(--accent)}
+    .img-section{margin-top:1rem}
+    .img-title{font-size:.8rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:.75rem}
+    .img-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.5rem}
+    .img-box{background:var(--bg3);border:2px dashed var(--border);border-radius:8px;padding:.75rem .5rem;transition:all .15s;min-height:90px}
+    .img-box:hover{border-color:var(--accent);background:rgba(88,166,255,.1);border-style:solid}
+    .img-btn{width:100%;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:.35rem;color:var(--text)}
+    .img-btn .img-icon{font-size:1.5rem}
+    .img-btn .img-name{font-size:.8rem;font-weight:700;color:var(--accent)}
+    .img-btn .img-num{font-size:.7rem;color:var(--text2);line-height:1.3}
+    .facts{background:var(--bg3);border-radius:8px;padding:1rem;margin-top:1rem}
+    .facts-title{font-size:.8rem;font-weight:700;color:var(--green);margin-bottom:.5rem}
+    .fact{font-size:.85rem;color:var(--text2);padding:.35rem 0;border-bottom:1px solid var(--border)}
+    .fact:last-child{border-bottom:none}
+
+    .compare{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-top:2rem}
+    .compare-title{font-size:1.1rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+    .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .compare-card{background:var(--bg3);border-radius:8px;padding:1rem;text-align:center}
+    .compare-card.healthy{border:2px solid var(--green)}
+    .compare-card.diseased{border:2px solid var(--red)}
+    .compare-label{font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:.5rem}
+    .compare-label.healthy{color:var(--green)}
+    .compare-label.diseased{color:var(--red)}
+    .compare-card svg{width:100%;height:140px}
+    .disease-btns{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+    .disease-btn{padding:.4rem .75rem;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--text2);cursor:pointer;font-size:.8rem;transition:all .15s}
+    .disease-btn:hover{color:var(--text)}
+    .disease-btn.active{border-color:var(--red);background:rgba(248,81,73,.15);color:var(--red)}
+
+    .nav-row{display:flex;justify-content:center;align-items:center;gap:1rem;margin-top:2rem;padding:1rem;background:var(--bg2);border-radius:8px}
+    .nav-btn{padding:.6rem 2rem;background:var(--accent);border:none;border-radius:6px;color:#fff;cursor:pointer;font-weight:700;transition:all .15s}
+    .nav-btn:hover{filter:brightness(1.1)}
+    .nav-btn:disabled{opacity:.4;cursor:not-allowed}
+    .nav-text{color:var(--text2);font-weight:600}
+
+    .part-popup{position:fixed;background:var(--bg2);border:2px solid var(--accent);border-radius:10px;padding:1rem;max-width:280px;box-shadow:0 8px 30px rgba(0,0,0,.5);z-index:1000;display:none}
+    .part-popup.show{display:block;animation:fadeIn .2s}
+    .part-popup h4{color:var(--accent);margin-bottom:.5rem}
+    .part-popup p{font-size:.9rem;color:var(--text2)}
+
+    /* ✅ Slide text block (full text per slide) */
+    .slide-notes{
+      margin-top:1rem;
+      padding:1rem;
+      background:var(--bg3);
+      border:1px solid var(--border);
+      border-radius:10px;
+      color:var(--text2);
+      font-size:.95rem;
+      white-space:pre-line;
+    }
+    .slide-notes a{color:var(--accent);text-decoration:none}
+    .slide-notes a:hover{text-decoration:underline}
+
+    /* Image modal */
+    .img-modal{position:fixed;inset:0;display:none;z-index:2200}
+    .img-modal.show{display:block}
+    .img-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.65)}
+    .img-modal-card{position:relative;max-width:980px;width:min(94vw,980px);margin:4vh auto;background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.55)}
+    .img-modal-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding:1rem 1.25rem;border-bottom:1px solid var(--border)}
+    .img-modal-title{font-size:1rem;font-weight:800;color:var(--accent)}
+    .img-modal-desc{font-size:.85rem;color:var(--text2);margin-top:.25rem}
+    .img-modal-close{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);cursor:pointer;font-weight:800;padding:.45rem .7rem}
+    .img-modal-close:hover{border-color:var(--accent)}
+    .img-modal-body{position:relative;padding:1rem;background:var(--bg)}
+    .img-modal-body img{max-width:100%;max-height:70vh;display:block;margin:0 auto;border-radius:10px;border:1px solid var(--border)}
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🧬 Human Anatomy</div>
+    <div class="tabs" id="tabs"></div>
+    <div class="controls">
+      <button class="btn" onclick="document.documentElement.requestFullscreen()">⛶ Fullscreen</button>
+    </div>
+  </header>
+
+  <main id="main"></main>
+
+  <div class="part-popup" id="popup"><h4 id="popupTitle"></h4><p id="popupDesc"></p></div>
+
+  <div class="img-modal" id="imgModal" aria-hidden="true">
+    <div class="img-modal-backdrop" onclick="closeImgModal()"></div>
+    <div class="img-modal-card" role="dialog" aria-modal="true">
+      <div class="img-modal-header">
+        <div>
+          <div class="img-modal-title" id="imgModalTitle">Image</div>
+          <div class="img-modal-desc" id="imgModalDesc"></div>
+        </div>
+        <button class="img-modal-close" onclick="closeImgModal()">✕</button>
+      </div>
+      <div class="img-modal-body">
+        <img id="imgModalImg" alt="" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+/* ✅ FULL TEXT — broken down to the EXACT slide structure you pasted */
+const slidesText = {
+
+  // ===== Brain (3 slides) =====
+  brain_1: `Slide 1: Introduction to the Brain
+
+The brain is the control center of the body.
+
+Part of the central nervous system (CNS), along with the spinal cord.
+
+Controls thoughts, memory, emotions, movement, and vital functions like breathing and heartbeat.`,
+  brain_2: `Slide 2: Main Parts of the Brain
+
+Cerebrum:
+Largest part, controls thinking, memory, learning, voluntary movements.
+
+Cerebellum:
+Controls balance, posture, and coordination.
+
+Brainstem:
+Connects brain to spinal cord, controls involuntary functions (breathing, heartbeat).`,
+  brain_3: `Slide 3: Importance and Functions
+
+Cerebrum: Thinking, problem-solving, sensory processing, voluntary movements.
+
+Cerebellum: Balance, coordination, smooth movements.
+
+Brainstem: Breathing, heartbeat, sleep, and connecting brain to spinal cord.
+
+Overall: Allows learning, communication, decision-making, and body regulation.`,
+
+  // ===== Eyes (5 slides) =====
+  eyes_1: `Slide 1: Introduction to the Eye
+• The eye is an important sense organ responsible for vision.
+• It receives light stimuli and allows us to see our surroundings.
+• Vision begins when light enters the eye.`,
+  eyes_2: `Slide 2: Path of Light in the Eye
+• Light first enters through the cornea.
+• It then passes through the pupil, which is controlled by the iris.
+• The lens focuses the light to form a clear image.`,
+  eyes_3: `Slide 3: The Retina
+• The focused image reaches the retina.
+• The retina contains special sensory cells that respond to light.
+• These cells convert light into nerve signals.`,
+  eyes_4: `Slide 4: Rods and Cones
+• Rods:
+  • Work in dim light
+  • Do not detect color
+• Cones:
+  • Function in bright light
+  • Responsible for color vision and sharp details`,
+  eyes_5: `Slide 5: Vision and Color Blindness
+• Nerve signals travel through the optic nerve to the brain.
+• The brain interprets these signals as images.
+• If cone cells do not function properly, color blindness occurs.
+• Proper function of all eye parts is essential for normal vision.`,
+
+  // ===== Lungs (7 slides — includes ALL points you pasted) =====
+  lungs_1: `🫁 Lungs — Introduction
+• Main organs of the respiratory system
+• Supply oxygen and remove carbon dioxide
+
+Your lungs are two spongy organs in your chest that supply oxygen to your body and remove carbon dioxide through gas exchange in tiny air sacs (alveoli).`,
+  lungs_2: `Structure
+• Two spongy organs in the chest (thorax), one on each side of the heart.
+• Right lung: 3 lobes (upper, middle, lower)
+• Left lung: 2 lobes (slightly smaller to accommodate the heart)
+• Protected by ribs and covered by pleural membranes (pleura).`,
+  lungs_3: `Air Pathway
+• Nose / Mouth
+• Trachea (windpipe)
+• Bronchi → Bronchioles
+• Alveoli (millions of tiny air sacs)`,
+  lungs_4: `Gas Exchange (in alveoli)
+• Oxygen moves from alveoli into blood capillaries.
+• Carbon dioxide moves from blood into alveoli.
+• CO₂ is released and O₂ enters the blood.`,
+  lungs_5: `Breathing Mechanism
+• Diaphragm contracts → inhale (lungs expand)
+• Diaphragm relaxes → exhale (lungs compress)
+• Chest muscles help breathing.`,
+  lungs_6: `Key Support Systems
+• Circulatory system: heart & blood vessels deliver oxygen and remove waste.
+• Muscles: diaphragm + chest muscles power breathing.
+• Nervous system: controls and regulates breathing.`,
+  lungs_7: `Important Facts + Health
+• Surfactant: substance that helps alveoli expand and contract easily (keeps alveoli open).
+• Volume: thousands of liters of air pass through daily.
+• Regeneration: damaged lung tissue generally doesn't regenerate.
+• Lung health: do not smoke; exercise regularly; maintain good health habits.`,
+
+  // ===== Heart (6 slides — EXACT breakdown you pasted) =====
+  heart_1: `Slide 1: The Heart
+• The heart is a muscular, central organ located in the middle of the chest, slightly tilted to the left.
+• Its size is approximately the size of a closed fist.
+• Its function is to pump blood to all parts of the body.
+• It lies behind the sternum, between the lungs.`,
+  heart_2: `Slide 2: Pericardium & Structure
+• The heart is covered by a double-layered membrane called the pericardium.
+• Its function is to reduce friction during heart contractions.
+• The heart is divided into right and left sides by the septum.
+• The septum prevents blood from mixing.`,
+  heart_3: `Slide 3: Chambers of the Heart
+• Each side contains two chambers:
+  • Atria (upper chambers)
+  • Ventricles (lower chambers)`,
+  heart_4: `Slide 4: Valves
+• Valves allow blood to flow in one direction only and prevent backward flow.
+• Bicuspid (Mitral) valve: between left atrium and left ventricle.
+• Tricuspid valve: between right atrium and right ventricle.
+• Semilunar valves: aortic and pulmonary.`,
+  heart_5: `Slide 5: Pulmonary Circulation
+• Deoxygenated blood enters the right atrium through the vena cavae.
+• Blood moves to the right ventricle.
+• Blood travels through the pulmonary artery to the lungs.
+• Gas exchange occurs in the lungs.`,
+  heart_6: `Slide 6: Systemic Circulation
+• Oxygenated blood returns through pulmonary veins to the left atrium.
+• Blood moves to the left ventricle.
+• Oxygen-rich blood is pumped through the aorta to the body.`,
+
+  // ===== Liver (3 slides) =====
+  liver_1: `Slide 1: Introduction to the Liver
+• Largest internal organ in the human body.
+• Size & Weight: About 15–17 cm in length; weighs approximately 1.2–1.5 kg in adults.
+• Located in the upper right side of the abdomen, beneath the diaphragm.
+• Composed of two main lobes and a network of blood vessels and bile ducts.
+• Plays a central role in metabolism and overall body health.`,
+  liver_2: `Slide 2: Functions of the Liver
+• Detoxification: Filters toxins and harmful substances from blood.
+• Metabolism: Processes fats, proteins, and carbohydrates.
+• Bile Production: Produces bile to aid in digestion and fat absorption.
+• Storage: Stores vitamins (A, D, B12) and minerals (iron, copper).
+• Blood Clotting: Produces proteins required for coagulation.`,
+  liver_3: `Slide 3: Common Medical Conditions of the Liver
+• Hepatitis: Inflammation of the liver, often viral.
+• Cirrhosis: Chronic scarring from long-term liver damage.
+• Fatty Liver Disease: Fat accumulation in liver cells.
+• Liver Cancer: Abnormal liver cell growth, linked to hepatitis or cirrhosis.
+• Jaundice: Yellowing of skin and eyes due to bilirubin buildup.`
+};
+
+/* ✅ IMPORTANT: PNG LINKS BELOW ARE UNCHANGED */
+const IMAGE_MAP = {
+  brain: [
+    { src: 'assets/images/brain_lobes_colored.png', title: 'Brain lobes (coloured)', desc: 'Frontal, parietal, temporal, occipital lobes' },
+    { src: 'assets/images/brain_lobes_functions.png', title: 'Brain lobes with functions', desc: 'Lobes labelled with key functions' },
+    { src: 'assets/images/brain_basic_parts.png', title: 'Cerebrum, cerebellum, brainstem', desc: 'Basic brain structure' }
+  ],
+  eyes: [
+    { src: 'assets/images/eye_anatomy.png', title: 'Human eye anatomy', desc: 'Cornea, lens, iris, retina' },
+    { src: 'assets/images/eye_retina_detail.png', title: 'Eye section & retina detail', desc: 'Cross-section with retina and optic nerve' },
+    { src: 'assets/images/eye_colours.png', title: 'Eye colour variations', desc: 'Common human eye colours' }
+  ],
+  lungs: [
+    { src: 'assets/images/gas_exchange.png', title: 'Gas exchange', desc: 'O₂ enters, CO₂ leaves (alveoli)' },
+    { src: 'assets/images/respiratory_system.png', title: 'Respiratory system labelled', desc: 'Nose, trachea, bronchi, diaphragm' },
+    { src: 'assets/images/pleural_pressure.png', title: 'Pleura & pressures', desc: 'Intrapleural vs intrapulmonary pressure' },
+    { src: 'assets/images/healthy_vs_smoker_lungs.png', title: 'Healthy vs smoker lungs', desc: 'Visual comparison of damage' },
+    { src: 'assets/images/lung_lobes.png', title: 'Lung lobes anatomy', desc: 'Right and left lung lobes labelled' }
+  ],
+  heart: [
+    { src: 'assets/images/heart_valves.png' , title: 'Human heart anatomy', desc: 'Chambers, valves, major vessels' },
+    { src: 'assets/images/heart_anatomy.png' , title: 'Pulmonary circulation', desc: 'Blood flow between heart and lungs' },
+    { src: 'assets/images/pulmonary_circulation.png', title: 'Heart valves', desc: 'Tricuspid, mitral, pulmonary, aortic' }
+  ],
+  liver: [
+    { src: 'assets/images/liver_progression.png', title: 'Disease progression', desc: 'Healthy → fibrosis → cirrhosis → carcinoma' },
+    { src: 'assets/images/liver_anatomy.png', title: 'Liver anatomy & bile ducts', desc: 'Hepatic ducts, gallbladder, pancreas' },
+    { src: 'assets/images/liver_functions.png', title: 'Functions of the liver', desc: 'Metabolism, detox, bile, storage' }
+  ]
+};
+
+const D = { topics: [
+  // ===== Brain =====
+  {
+    id:"brain",title:"🧠 Brain",
+    imgs:[
+      {t:"Brain lobes (colored)",d:"Frontal, parietal, temporal, occipital lobes"},
+      {t:"Brain lobes with functions",d:"Labeled with key functions"},
+      {t:"Cerebrum, cerebellum, brainstem",d:"Basic brain structure"}
+    ],
+    facts:["~86 billion neurons","Uses 20% of energy","Weighs ~1.4 kg"],
+    diseases:[{id:"alzheimers",name:"Alzheimer's"},{id:"stroke",name:"Stroke"},{id:"tumor",name:"Brain Tumor"}],
+    parts:{
+      cerebrum:{n:"Cerebrum",d:"Largest part. Controls thinking, memory, learning, voluntary movements."},
+      cerebellum:{n:"Cerebellum",d:"Controls balance, posture, coordination."},
+      brainstem:{n:"Brainstem",d:"Connects to spinal cord. Controls breathing, heartbeat, sleep."}
+    },
+    slides:[
+      {t:"Introduction to the Brain",i:"🧠",textKey:"brain_1",c:`<p>The brain is the <strong>control center of the body</strong>.</p><p>Part of the <strong>central nervous system (CNS)</strong>, along with the spinal cord.</p><div class="highlight"><strong>Key Functions:</strong> Thoughts, memory, emotions, movement, and vital functions like breathing and heartbeat.</div>`},
+      {t:"Main Parts of the Brain",i:"🔬",textKey:"brain_2",c:`<div class="section-title">Cerebrum</div><p><strong>Largest part</strong> — thinking, memory, learning, voluntary movements.</p><div class="section-title">Cerebellum</div><p>Balance, posture, coordination.</p><div class="section-title">Brainstem</div><p>Involuntary functions: breathing, heartbeat.</p>`},
+      {t:"Importance & Functions",i:"⚡",textKey:"brain_3",c:`<div class="section-title">Cerebrum</div><ul><li>Thinking & problem-solving</li><li>Sensory processing</li><li>Voluntary movements</li></ul><div class="section-title">Cerebellum</div><ul><li>Balance & coordination</li><li>Smooth movements</li></ul><div class="section-title">Brainstem</div><ul><li>Breathing, heartbeat, sleep</li><li>Connects brain to spinal cord</li></ul><div class="highlight"><strong>Overall:</strong> Learning, communication, decision-making, body regulation.</div>`}
+    ]
+  },
+
+  // ===== Eyes (NOW 5 slides) =====
+  {
+    id:"eyes",title:"👁️ Eyes",
+    imgs:[
+      {t:"Human eye anatomy (labeled)",d:"Retina, optic nerve, lens"},
+      {t:"Eye anatomy & retina detail",d:"Cross-section with photoreceptors"},
+      {t:"Eye colour variations",d:"Common human eye colours"}
+    ],
+    facts:["~10 million colors","Blinks 15-20x/min","Cornea has no blood vessels"],
+    diseases:[{id:"cataracts",name:"Cataracts"},{id:"glaucoma",name:"Glaucoma"},{id:"colorblind",name:"Color Blindness"}],
+    parts:{
+      cornea:{n:"Cornea",d:"Transparent front layer. Bends light entering the eye."},
+      iris:{n:"Iris",d:"Colored part. Controls pupil size."},
+      pupil:{n:"Pupil",d:"Opening that lets light in. Dilates/constricts."},
+      lens:{n:"Lens",d:"Focuses light onto retina."},
+      retina:{n:"Retina",d:"Contains rods and cones for vision."}
+    },
+    slides:[
+      {t:"Introduction to the Eye",i:"👁️",textKey:"eyes_1",c:`<p>The eye is an important sense organ responsible for vision.</p><div class="highlight">Vision begins when light enters the eye.</div>`},
+      {t:"Path of Light in the Eye",i:"➡️",textKey:"eyes_2",c:`<div class="section-title">Light Path</div><ul><li>Cornea</li><li>Pupil (controlled by iris)</li><li>Lens focuses the light</li></ul>`},
+      {t:"The Retina",i:"🧬",textKey:"eyes_3",c:`<p>The focused image reaches the retina.</p><div class="highlight">Retina cells respond to light and convert it into nerve signals.</div>`},
+      {t:"Rods and Cones",i:"🔬",textKey:"eyes_4",c:`<div class="section-title">Rods</div><ul><li>Dim light</li><li>No color</li></ul><div class="section-title">Cones</div><ul><li>Bright light</li><li>Color vision & sharp detail</li></ul>`},
+      {t:"Vision & Color Blindness",i:"🧠",textKey:"eyes_5",c:`<p>Signals travel through the optic nerve to the brain.</p><div class="highlight">If cones don’t function properly, color blindness can occur.</div>`}
+    ]
+  },
+
+  // ===== Lungs (NOW 7 slides) =====
+  {
+    id:"lungs",title:"🫁 Lungs",
+    imgs:[
+      {t:"Gas exchange in lungs",d:"O₂ and CO₂ exchange in alveoli"},
+      {t:"Respiratory system labeled",d:"Nose, trachea, bronchi, lungs, diaphragm"},
+      {t:"Lung pressures & pleura",d:"Intrapleural pressure diagram"},
+      {t:"Healthy vs smoker lungs",d:"Comparison of healthy vs damaged"},
+      {t:"Lung lobes anatomy",d:"Right and left lung lobes labeled"}
+    ],
+    facts:["~480 million alveoli","Surface = tennis court","Right lung larger"],
+    diseases:[{id:"asthma",name:"Asthma"},{id:"copd",name:"COPD"},{id:"pneumonia",name:"Pneumonia"}],
+    parts:{
+      trachea:{n:"Trachea",d:"Windpipe. Carries air to bronchi."},
+      bronchi:{n:"Bronchi",d:"Main airways into each lung."},
+      alveoli:{n:"Alveoli",d:"Tiny air sacs for gas exchange."},
+      diaphragm:{n:"Diaphragm",d:"Muscle powering breathing."}
+    },
+    slides:[
+      {t:"Introduction",i:"🫁",textKey:"lungs_1",c:`<p>The lungs are the main organs of the respiratory system.</p><div class="highlight">They supply oxygen and remove carbon dioxide.</div>`},
+      {t:"Structure",i:"🏗️",textKey:"lungs_2",c:`<div class="section-title">Key Structure</div><ul><li>Right lung: 3 lobes</li><li>Left lung: 2 lobes</li><li>Protected by ribs & pleura</li></ul>`},
+      {t:"Air Pathway",i:"➡️",textKey:"lungs_3",c:`<div class="section-title">Air Route</div><p>Nose/Mouth → Trachea → Bronchi → Bronchioles → Alveoli</p>`},
+      {t:"Gas Exchange",i:"💨",textKey:"lungs_4",c:`<div class="highlight">In alveoli: O₂ enters blood, CO₂ leaves blood.</div>`},
+      {t:"Breathing Mechanism",i:"🎛️",textKey:"lungs_5",c:`<ul><li>Diaphragm contracts → inhale</li><li>Diaphragm relaxes → exhale</li></ul>`},
+      {t:"Support Systems",i:"🔗",textKey:"lungs_6",c:`<div class="section-title">Support</div><ul><li>Heart & blood vessels</li><li>Breathing muscles</li><li>Nervous system control</li></ul>`},
+      {t:"Important Facts & Health",i:"📌",textKey:"lungs_7",c:`<div class="section-title">Facts</div><ul><li>Surfactant keeps alveoli open</li><li>Large air volume daily</li><li>Limited regeneration</li></ul><div class="highlight"><strong>Health:</strong> Don’t smoke + exercise regularly.</div>`}
+    ]
+  },
+
+  // ===== Heart (NOW 6 slides) =====
+  {
+    id:"heart",title:"❤️ Heart",
+    imgs:[
+      {t:"Human heart anatomy",d:"Chambers, valves, major vessels"},
+      {t:"Pulmonary circulation",d:"Blood flow between heart and lungs"},
+      {t:"Heart valves",d:"Tricuspid, mitral, pulmonary, aortic"}
+    ],
+    facts:["~100,000 beats/day","Pumps ~7,500 L/day","Size of your fist"],
+    diseases:[{id:"cad",name:"Coronary Artery Disease"},{id:"arrhythmia",name:"Arrhythmia"},{id:"heartfailure",name:"Heart Failure"}],
+    parts:{
+      rightAtrium:{n:"Right Atrium",d:"Receives deoxygenated blood from body."},
+      leftVentricle:{n:"Left Ventricle",d:"Pumps oxygenated blood to body."},
+      valves:{n:"Heart Valves",d:"Prevent blood backflow."}
+    },
+    slides:[
+      {t:"The Heart",i:"❤️",textKey:"heart_1",c:`<p>The heart is a muscular organ that pumps blood to the body.</p><div class="highlight">Size: approximately a closed fist.</div>`},
+      {t:"Pericardium & Structure",i:"🧾",textKey:"heart_2",c:`<div class="section-title">Pericardium</div><p>Double-layer membrane that reduces friction.</p><div class="section-title">Septum</div><p>Separates right and left sides, prevents mixing.</p>`},
+      {t:"Chambers",i:"🏛️",textKey:"heart_3",c:`<ul><li>Atria (upper chambers)</li><li>Ventricles (lower chambers)</li></ul>`},
+      {t:"Valves",i:"🚪",textKey:"heart_4",c:`<div class="section-title">Valves</div><ul><li>Mitral (bicuspid)</li><li>Tricuspid</li><li>Semilunar: aortic & pulmonary</li></ul>`},
+      {t:"Pulmonary Circulation",i:"🫁",textKey:"heart_5",c:`<p>Deoxygenated blood goes from heart → lungs.</p><div class="highlight">Gas exchange happens in lungs.</div>`},
+      {t:"Systemic Circulation",i:"🌍",textKey:"heart_6",c:`<p>Oxygenated blood returns to heart → pumped through aorta to the body.</p>`}
+    ]
+  },
+
+  // ===== Liver =====
+  {
+    id:"liver",title:"🫘 Liver",
+    imgs:[
+      {t:"Liver disease progression",d:"Healthy → fibrosis → cirrhosis → carcinoma"},
+      {t:"Liver anatomy & bile ducts",d:"Hepatic ducts, gallbladder, pancreas"},
+      {t:"Functions of the liver",d:"Metabolism, detox, bile, storage"}
+    ],
+    facts:["Largest internal organ","500+ functions","Can regenerate"],
+    diseases:[{id:"hepatitis",name:"Hepatitis"},{id:"cirrhosis",name:"Cirrhosis"},{id:"fatty",name:"Fatty Liver"},{id:"cancer",name:"Liver Cancer"},{id:"jaundice",name:"Jaundice"}],
+    parts:{
+      rightLobe:{n:"Right Lobe",d:"Larger lobe. Most metabolic functions."},
+      leftLobe:{n:"Left Lobe",d:"Smaller lobe."},
+      gallbladder:{n:"Gallbladder",d:"Stores bile for digestion."}
+    },
+    slides:[
+      {t:"Introduction",i:"🫘",textKey:"liver_1",c:`<p>The liver is the largest internal organ.</p><div class="highlight">Upper right abdomen, beneath the diaphragm.</div>`},
+      {t:"Functions",i:"⚙️",textKey:"liver_2",c:`<div class="section-title">Main Functions</div><ul><li>Detoxification</li><li>Metabolism</li><li>Bile production</li><li>Storage</li><li>Blood clotting proteins</li></ul>`},
+      {t:"Medical Conditions",i:"⚠️",textKey:"liver_3",c:`<ul><li>Hepatitis</li><li>Cirrhosis</li><li>Fatty liver disease</li><li>Liver cancer</li><li>Jaundice</li></ul>`}
+    ]
+  }
+
+]};
+
+let S={ti:0,si:0,spd:1,paused:false};
+
+function svg(id,dis=false,disease=null){
+  const spd=S.spd,p=S.paused;
+
+  if(id==='cover'){
+    return `<svg viewBox="0 0 400 400">
+      <defs>
+        <linearGradient id="cov" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#58a6ff" stop-opacity=".25"/>
+          <stop offset="100%" stop-color="#3fb950" stop-opacity=".15"/>
+        </linearGradient>
+      </defs>
+      <rect x="40" y="60" width="320" height="280" rx="18" fill="url(#cov)" stroke="#30363d" stroke-width="2"/>
+      <text x="200" y="150" text-anchor="middle" fill="#f0f6fc" font-size="20" font-weight="800">Human Anatomy</text>
+      <text x="200" y="185" text-anchor="middle" fill="#8b949e" font-size="13" font-weight="700">Analytical chemistry</text>
+      <g fill="none" stroke="#58a6ff" stroke-width="3" opacity=".9">
+        <path d="M130 250C170 210 230 210 270 250"/>
+        <path d="M130 250C170 290 230 290 270 250"/>
+      </g>
+      <g fill="#58a6ff" opacity=".9">
+        <circle cx="130" cy="250" r="6"/><circle cx="270" cy="250" r="6"/>
+        <circle cx="170" cy="230" r="5"/><circle cx="230" cy="230" r="5"/>
+        <circle cx="170" cy="270" r="5"/><circle cx="230" cy="270" r="5"/>
+      </g>
+    </svg>`;
+  }
+
+  if(id==='brain'){
+    const c=dis?'#a08080':'#e8b4b8',d=dis?'#705050':'#c9989d';
+    let fx='';
+    if(dis&&disease==='tumor')fx=`<circle cx="140" cy="130" r="20" fill="rgba(150,50,50,.75)" stroke="#f44" stroke-width="2"/><text x="140" y="135" text-anchor="middle" fill="#fff" font-size="8">Tumor</text>`;
+    if(dis&&disease==='alzheimers')fx=`<ellipse cx="200" cy="150" rx="50" ry="30" fill="rgba(60,40,40,.5)"/><text x="200" y="155" text-anchor="middle" fill="#f88" font-size="9">Shrinkage</text>`;
+    return `<svg viewBox="0 0 400 400"><defs><linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f8e0e2"/><stop offset="100%" stop-color="${d}"/></linearGradient></defs>
+    <ellipse data-part="cerebrum" cx="200" cy="155" rx="140" ry="115" fill="url(#bg)" stroke="${d}" stroke-width="2.5" style="cursor:pointer"/>
+    <path d="M200 45 L200 270" stroke="${d}" stroke-width="2" opacity=".5"/>
+    <g stroke="${d}" stroke-width="2" fill="none" opacity=".6"><path d="M60 100Q80 75 105 80Q95 55 125 50"/><path d="M340 100Q320 75 295 80Q305 55 275 50"/><path d="M70 130Q95 120 115 130"/><path d="M330 130Q305 120 285 130"/></g>
+    <ellipse data-part="cerebellum" cx="200" cy="300" rx="70" ry="35" fill="${c}" stroke="${d}" stroke-width="2" style="cursor:pointer"/>
+    <rect data-part="brainstem" x="185" y="330" width="30" height="45" rx="8" fill="${c}" stroke="${d}" stroke-width="2" style="cursor:pointer"/>
+    ${p?'':`<circle cx="130" cy="120" r="5" fill="${c}"><animate attributeName="opacity" values=".3;1;.3" dur="${1.5/spd}s" repeatCount="indefinite"/></circle>
+    <circle cx="270" cy="120" r="5" fill="${c}"><animate attributeName="opacity" values=".3;1;.3" dur="${1.5/spd}s" repeatCount="indefinite" begin=".3s"/></circle>`}
+    ${fx}</svg>`;
+  }
+
+  if(id==='eyes'){
+    const ic=dis&&disease==='cataracts'?'#8899aa':'#4a7c9b';
+    const pupilColor=dis&&disease==='cataracts'?'#333':'#0a0a0a';
+    let fx='';
+    if(dis&&disease==='cataracts')fx=`<circle cx="200" cy="200" r="45" fill="rgba(200,200,200,.5)"/><text x="200" y="320" text-anchor="middle" fill="#888" font-size="10">Clouded Lens</text>`;
+    if(dis&&disease==='glaucoma')fx=`<circle cx="200" cy="330" r="18" fill="rgba(255,80,80,.6)" stroke="#f44" stroke-width="2"/><text x="200" y="370" text-anchor="middle" fill="#f44" font-size="9">Optic Nerve Damage</text>`;
+    if(dis&&disease==='colorblind')fx=`<text x="200" y="370" text-anchor="middle" fill="#f80" font-size="10">Cone Cell Dysfunction</text>`;
+    return `<svg viewBox="0 0 400 400">
+    <defs>
+      <radialGradient id="irisGrad" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#1a3a5a"/>
+        <stop offset="40%" stop-color="#2d5a7b"/>
+        <stop offset="80%" stop-color="${ic}"/>
+        <stop offset="100%" stop-color="#1a3a5a"/>
+      </radialGradient>
+      <radialGradient id="eyeShine" cx="30%" cy="30%" r="50%">
+        <stop offset="0%" stop-color="white" stop-opacity=".9"/>
+        <stop offset="100%" stop-color="white" stop-opacity="0"/>
+      </radialGradient>
+      <clipPath id="eyeClip"><ellipse cx="200" cy="200" rx="148" ry="88"/></clipPath>
+    </defs>
+    <ellipse cx="200" cy="200" rx="150" ry="90" fill="#f8f8f5" stroke="#ddd" stroke-width="3"/>
+    <g stroke="#ffaaaa" stroke-width="1" fill="none" opacity=".4" clip-path="url(#eyeClip)">
+      <path d="M55 185Q80 180 100 188"/><path d="M60 215Q85 220 105 212"/>
+      <path d="M345 185Q320 180 300 188"/><path d="M340 215Q315 220 295 212"/>
+    </g>
+    <circle data-part="iris" cx="200" cy="200" r="70" fill="url(#irisGrad)" stroke="#1a3a5a" stroke-width="2" style="cursor:pointer"/>
+    <g stroke="${ic}" stroke-width=".6" opacity=".4" clip-path="url(#eyeClip)">
+      ${Array.from({length:24},(_,i)=>{const a=i*15*Math.PI/180;return `<line x1="${200+Math.cos(a)*28}" y1="${200+Math.sin(a)*28}" x2="${200+Math.cos(a)*68}" y2="${200+Math.sin(a)*68}"/>`;}).join('')}
+    </g>
+    <circle data-part="pupil" cx="200" cy="200" r="28" fill="${pupilColor}" style="cursor:pointer">
+      ${p?'':`<animate attributeName="r" values="28;36;28" dur="${4/spd}s" repeatCount="indefinite"/>`}
+    </circle>
+    <ellipse cx="178" cy="175" rx="18" ry="22" fill="url(#eyeShine)"/>
+    <circle cx="225" cy="218" r="8" fill="white" opacity=".5"/>
+    <path d="M45 200Q100 95 200 85Q300 95 355 200" fill="none" stroke="#d4a088" stroke-width="8" stroke-linecap="round"/>
+    <path d="M45 200Q100 305 200 315Q300 305 355 200" fill="none" stroke="#d4a088" stroke-width="6" stroke-linecap="round"/>
+    <g opacity=".6">
+      <path d="M200 290L200 350" stroke="${ic}" stroke-width="6" stroke-linecap="round">
+        ${p?'':`<animate attributeName="stroke-dasharray" values="0,80;80,0" dur="${1/spd}s" repeatCount="indefinite"/>`}
+      </path>
+      <polygon points="192,350 200,368 208,350" fill="${ic}"/>
+      <text x="200" y="388" text-anchor="middle" fill="${ic}" font-size="9" font-weight="bold">To Brain</text>
+    </g>
+    ${fx}
+    </svg>`;
+  }
+
+  if(id==='lungs'){
+    const d=dis?'#906060':'#d48888';
+    let fx=''; if(dis&&disease==='pneumonia') fx=`<circle cx="110" cy="240" r="25" fill="#cc8" opacity=".6"/><circle cx="290" cy="240" r="25" fill="#cc8" opacity=".6"/>`;
+    return `<svg viewBox="0 0 400 400"><defs>
+      <linearGradient id="lgL" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fdd"/><stop offset="100%" stop-color="${d}"/></linearGradient>
+      <linearGradient id="lgR" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fdd"/><stop offset="100%" stop-color="${d}"/></linearGradient>
+    </defs>
+    <rect data-part="trachea" x="185" y="30" width="30" height="70" rx="8" fill="#e8c4b0" stroke="#c9a490" stroke-width="2" style="cursor:pointer"/>
+    <path d="M185 100Q160 120 135 150" stroke="#e8c4b0" stroke-width="14" fill="none"/>
+    <path d="M215 100Q240 120 265 150" stroke="#e8c4b0" stroke-width="14" fill="none"/>
+    <g data-part="alveoli" style="cursor:pointer;${p?'':`animation:breathe ${3/spd}s ease-in-out infinite`};transform-origin:115px 235px">
+      <path d="M135 150Q95 165 65 205Q35 255 45 315Q55 360 105 370Q150 377 180 360Q195 350 195 330L195 160Q180 152 135 150" fill="url(#lgL)" stroke="${d}" stroke-width="2"/>
+    </g>
+    <g style="${p?'':`animation:breathe ${3/spd}s ease-in-out infinite .1s`};transform-origin:285px 235px">
+      <path d="M265 150Q305 165 335 205Q365 255 355 315Q345 360 295 370Q250 377 220 360Q205 350 205 330L205 160Q220 152 265 150" fill="url(#lgR)" stroke="${d}" stroke-width="2"/>
+    </g>
+    <path data-part="diaphragm" d="M30 380Q115 355 200 360Q285 355 370 380" stroke="#d4a088" stroke-width="8" fill="none" style="cursor:pointer">
+      ${p?'':`<animate attributeName="d" values="M30 380Q115 355 200 360Q285 355 370 380;M30 380Q115 335 200 330Q285 335 370 380;M30 380Q115 355 200 360Q285 355 370 380" dur="${3/spd}s" repeatCount="indefinite"/>`}
+    </path>
+    ${fx}
+    <style>@keyframes breathe{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.06)}}</style>
+    </svg>`;
+  }
+
+  if(id==='heart'){
+    const c=dis?'#8b4040':'#c74b4b',d=dis?'#6b3030':'#a33a3a';
+    let fx=''; if(dis&&disease==='cad') fx=`<circle cx="140" cy="135" r="8" fill="#fc0" stroke="#f90" stroke-width="2"/>`;
+    return `<svg viewBox="0 0 400 400"><defs><linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e86b6b"/><stop offset="100%" stop-color="${d}"/></linearGradient></defs>
+    <path d="M125 65L125 35Q125 20 140 20L170 20" stroke="#4a6fa5" stroke-width="14" fill="none"/>
+    <path d="M200 20Q230 20 245 32Q280 55 280 95L280 135" stroke="${c}" stroke-width="16" fill="none"/>
+    <g style="${p?'':`animation:hb ${1.2/spd}s ease-in-out infinite`};transform-origin:200px 220px">
+      <path d="M200 345C95 285 55 205 80 145C95 100 135 80 175 85C195 88 200 108 200 108C200 108 205 88 225 85C265 80 305 100 320 145C345 205 305 285 200 345" fill="url(#hg)" stroke="${d}" stroke-width="3"/>
+      <path d="M200 112L200 330" stroke="${d}" stroke-width="3" opacity=".5"/>
+      <g font-size="14" font-weight="bold" fill="#fff" text-anchor="middle">
+        <text data-part="rightAtrium" x="145" y="160" style="cursor:pointer">RA</text>
+        <text x="255" y="160">LA</text>
+        <text x="145" y="255">RV</text>
+        <text data-part="leftVentricle" x="255" y="255" style="cursor:pointer">LV</text>
+      </g>
+    </g>
+    ${fx}
+    <style>@keyframes hb{0%,100%{transform:scale(1)}15%{transform:scale(1.05)}30%{transform:scale(1)}45%{transform:scale(1.03)}}</style>
+    </svg>`;
+  }
+
+  if(id==='liver'){
+    const d=dis?'#4b3013':'#6b3510';
+    let fx='';
+    if(dis&&disease==='cirrhosis') fx=Array.from({length:10},()=>`<circle cx="${70+Math.random()*260}" cy="${110+Math.random()*140}" r="${5+Math.random()*10}" fill="#4a3020"/>`).join('');
+    if(dis&&disease==='fatty') fx=Array.from({length:12},()=>`<circle cx="${70+Math.random()*260}" cy="${110+Math.random()*140}" r="${8+Math.random()*12}" fill="#fe8" opacity=".5"/>`).join('');
+    return `<svg viewBox="0 0 400 400"><defs><linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ab6533"/><stop offset="100%" stop-color="${d}"/></linearGradient></defs>
+    <path d="M45 155Q45 105 100 90Q155 73 225 85Q310 97 360 130Q390 160 380 205Q370 255 315 290Q250 325 170 312Q85 298 55 255Q35 220 45 155" fill="url(#lg)" stroke="${d}" stroke-width="3"/>
+    <path d="M205 83L200 310" stroke="${d}" stroke-width="3" opacity=".5"/>
+    <text data-part="rightLobe" x="285" y="190" fill="#fff" font-size="13" font-weight="bold" style="cursor:pointer">Right Lobe</text>
+    <text data-part="leftLobe" x="100" y="170" fill="#fff" font-size="11" font-weight="bold" style="cursor:pointer">Left Lobe</text>
+    <ellipse data-part="gallbladder" cx="235" cy="280" rx="18" ry="32" fill="#6b8e23" stroke="#5a7e13" stroke-width="2" transform="rotate(18,235,280)" style="cursor:pointer"/>
+    ${fx}</svg>`;
+  }
+
+  return '';
+}
+
+function openImgModal(topicId, index){
+  const item = (IMAGE_MAP[topicId]||[])[index];
+  if(!item) return;
+  document.getElementById('imgModalTitle').textContent = item.title;
+  document.getElementById('imgModalDesc').textContent = item.desc;
+  const img = document.getElementById('imgModalImg');
+  img.src = item.src;
+  img.alt = item.title;
+  document.getElementById('imgModal').classList.add('show');
+}
+function closeImgModal(){
+  document.getElementById('imgModal').classList.remove('show');
+}
+
+function render(){
+  document.getElementById('tabs').innerHTML = D.topics.map((t,i)=>
+    `<button class="tab${i===S.ti?' active':''}" onclick="S.ti=${i};S.si=0;render()">${t.title}</button>`
+  ).join('');
+
+  let html='';
+  D.topics.forEach((topic,ti)=>{
+    html+=`<div class="topic${ti===S.ti?' active':''}">`;
+
+    html+=`<div class="slide-tabs">${
+      topic.slides.map((s,si)=>
+        `<button class="slide-tab${ti===S.ti&&si===S.si?' active':''}" onclick="S.si=${si};render()">${s.i} Slide ${si+1}</button>`
+      ).join('')
+    }</div>`;
+
+    topic.slides.forEach((slide,si)=>{
+      const slideTextRaw = slidesText[slide.textKey] || '';
+      const slideTextHTML = slideTextRaw
+        .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+
+      html+=`<div class="slide${ti===S.ti&&si===S.si?' active':''}">
+        <div class="grid">
+          <div class="content-box">
+            <h2 class="slide-title"><span class="icon">${slide.i}</span>${slide.t}</h2>
+            <div class="text">${slide.c}</div>
+            <div class="slide-notes">${slideTextHTML}</div>
+          </div>
+          <div class="visual-box">
+            <div class="svg-wrap" id="svg-${topic.id}">${svg(topic.id)}</div>
+            <div class="svg-label">${topic.title} Anatomy</div>
+
+            <div class="anim-row">
+              <button class="anim-btn${S.paused?'':' active'}" onclick="S.paused=!S.paused;render()">${S.paused?'▶️ Play':'⏸️ Pause'}</button>
+              <div class="speed-row">
+                <label>Speed:</label>
+                <input type="range" min="0.2" max="2" step="0.1" value="${S.spd}" onchange="S.spd=this.value;render()">
+              </div>
+            </div>
+
+            ${topic.imgs && topic.imgs.length ? `
+              <div class="img-section">
+                <div class="img-title">📷 Reference Images (Click to open)</div>
+                <div class="img-grid">
+                  ${topic.imgs.map((img,i)=>`
+                    <button class="img-box img-btn" type="button" data-topic="${topic.id}" data-index="${i}">
+                      <span class="img-icon">🖼️</span>
+                      <span class="img-name">${img.t}</span>
+                      <span class="img-num">${img.d}</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+
+            ${topic.facts && topic.facts.length ? `
+              <div class="facts">
+                <div class="facts-title">📌 Quick Facts</div>
+                ${topic.facts.map(f=>`<div class="fact">• ${f}</div>`).join('')}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+
+        ${topic.diseases && topic.diseases.length ? `
+          <div class="compare">
+            <div class="compare-title">⚖️ Compare: Healthy vs Diseased</div>
+            <div class="compare-grid">
+              <div class="compare-card healthy">
+                <div class="compare-label healthy">✓ Healthy</div>
+                ${svg(topic.id,false)}
+              </div>
+              <div class="compare-card diseased">
+                <div class="compare-label diseased">✗ Diseased</div>
+                <div id="dis-${topic.id}-${si}">${svg(topic.id,true,topic.diseases[0]?.id)}</div>
+              </div>
+            </div>
+            <div class="disease-btns">
+              ${topic.diseases.map((d,di)=>`
+                <button class="disease-btn${di===0?' active':''}"
+                  onclick="
+                    this.parentElement.querySelectorAll('.disease-btn').forEach(b=>b.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById('dis-${topic.id}-${si}').innerHTML = svg('${topic.id}',true,'${d.id}');
+                  ">
+                  ${d.name}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+      </div>`;
+    });
+
+    html+=`<div class="nav-row">
+      <button class="nav-btn" ${S.si===0?'disabled':''} onclick="S.si--;render()">← Previous</button>
+      <span class="nav-text">Slide ${S.si+1} of ${topic.slides.length}</span>
+      <button class="nav-btn" ${S.si===topic.slides.length-1?'disabled':''} onclick="S.si++;render()">Next →</button>
+    </div>`;
+
+    html+=`</div>`;
+  });
+
+  document.getElementById('main').innerHTML = html;
+
+  // Part click handlers (only if parts exist)
+  document.querySelectorAll('[data-part]').forEach(el=>{
+    el.style.cursor='pointer';
+    el.onclick=e=>{
+      e.stopPropagation();
+      const topic = D.topics[S.ti];
+      const part = topic.parts ? topic.parts[el.dataset.part] : null;
+      if(part){
+        document.getElementById('popupTitle').textContent = part.n;
+        document.getElementById('popupDesc').textContent = part.d;
+        const popup = document.getElementById('popup');
+        popup.style.left = Math.min(e.clientX+15, window.innerWidth-290) + 'px';
+        popup.style.top  = Math.min(e.clientY-10, window.innerHeight-120) + 'px';
+        popup.classList.add('show');
+        setTimeout(()=>popup.classList.remove('show'), 4000);
+      }
+    };
+  });
+
+  // Image button handlers
+  document.querySelectorAll('.img-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      openImgModal(btn.dataset.topic, Number(btn.dataset.index));
+    });
+  });
+}
+
+document.onclick = ()=>document.getElementById('popup').classList.remove('show');
+document.onkeydown = e=>{
+  if(e.key==='Escape') closeImgModal();
+  if(e.key==='ArrowRight' && S.si < D.topics[S.ti].slides.length-1){ S.si++; render(); }
+  if(e.key==='ArrowLeft'  && S.si > 0){ S.si--; render(); }
+};
+
+render();
+  </script>
+</body>
+</html>
